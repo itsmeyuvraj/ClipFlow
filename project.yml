@@ -1,0 +1,76 @@
+name: ClipFlow
+options:
+  bundleIdPrefix: com.yuvraj
+  deploymentTarget:
+    macOS: "14.0"
+  generateEmptyDirectories: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MACOSX_DEPLOYMENT_TARGET: "14.0"
+    ENABLE_USER_SCRIPT_SANDBOXING: false
+
+targets:
+  ClipFlow:
+    type: application
+    platform: macOS
+    deploymentTarget: "14.0"
+    sources:
+      - path: Sources/ClipFlow
+      - path: ClipFlow/Assets.xcassets
+    settings:
+      base:
+        PRODUCT_NAME: ClipFlow
+        PRODUCT_BUNDLE_IDENTIFIER: com.yuvraj.clipflow
+        INFOPLIST_FILE: ClipFlow/Info.plist
+        CODE_SIGN_ENTITLEMENTS: ClipFlow/ClipFlow.entitlements
+        CODE_SIGN_IDENTITY: "-"
+        CODE_SIGNING_REQUIRED: NO
+        CODE_SIGN_STYLE: Automatic
+        ENABLE_APP_SANDBOX: NO
+        ENABLE_HARDENED_RUNTIME: NO
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        COMBINE_HIDPI_IMAGES: YES
+        GENERATE_INFOPLIST_FILE: NO
+        ENABLE_TESTABILITY: YES
+
+  ClipFlowTests:
+    type: bundle.unit-test
+    platform: macOS
+    deploymentTarget: "14.0"
+    sources:
+      - path: Tests/ClipFlowTests
+    dependencies:
+      - target: ClipFlow
+    settings:
+      base:
+        PRODUCT_NAME: ClipFlowTests
+        PRODUCT_BUNDLE_IDENTIFIER: com.yuvraj.clipflow.tests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/ClipFlow.app/Contents/MacOS/ClipFlow"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+        CODE_SIGN_IDENTITY: "-"
+        CODE_SIGNING_REQUIRED: NO
+        ENABLE_APP_SANDBOX: NO
+
+schemes:
+  ClipFlow:
+    build:
+      targets:
+        ClipFlow: all
+        ClipFlowTests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - ClipFlowTests
+    profile:
+      config: Release
+    analyze:
+      config: Debug
+    archive:
+      config: Release
+
